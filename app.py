@@ -1,7 +1,9 @@
 import json
-
+import random
 from fastapi import FastAPI, HTTPException
 import httpx
+import asyncio
+import requests
 
 app = FastAPI()
 
@@ -14,8 +16,6 @@ async def aggregate_data():
             service2_response = await client.get("https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com")
             service3_response = await client.get("https://cloudcomputing-worldmingle.ue.r.appspot.com/")
 
-            #if not service1_response.status_code == 200 or not service2_response.status_code == 200 or not service3_response.status_code == 200:
-                #raise HTTPException(status_code=502, detail="Bad Gateway: One of the services is not responding correctly")
             print('response')
             print(service1_response)
             print('response')
@@ -35,3 +35,46 @@ async def aggregate_data():
             raise HTTPException(status_code=500, detail="Invalid JSON received from one of the services")
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+
+
+async def get_service_data(client, url):
+    response = await client.get(url)
+    print(f"Received response from {url}: {response.status_code}")
+    if 'json' in response.headers.get('Content-Type', ''):
+        return response.json()
+    return response.text
+
+@app.get("/aggregate_asynch")
+async def aggregate_data():
+    async with httpx.AsyncClient() as client:
+        urls = [
+            "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
+            "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
+            "https://cloudcomputing-worldmingle.ue.r.appspot.com/"
+        ]
+
+        for _ in range(10):
+            shuffled_urls = random.sample(urls, len(urls))
+            tasks = [get_service_data(client, url) for url in shuffled_urls]
+            results = await asyncio.gather(*tasks)
+            aggregated_data = {
+                "service1_data": results[0],
+                "service2_data": results[1],
+                "service3_data": results[2]
+            }
+            print(f"Aggregated Data: {aggregated_data}")
+
+        return aggregated_data
+
+def get_data_synchronously():
+    urls = [
+        "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
+        "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
+        "https://cloudcomputing-worldmingle.ue.r.appspot.com/"
+    ]
+
+    for url in urls:
+        response = requests.get(url)
+        print(f"Received response from {url}: {response.status_code}")
+
+get_data_synchronously()
