@@ -14,12 +14,15 @@ async def aggregate_data():
             service2_response = await client.get("https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com")
             service3_response = await client.get("https://cloudcomputing-worldmingle.ue.r.appspot.com/")
 
-            if not service1_response.status_code == 200 or not service2_response.status_code == 200 or not service3_response.status_code == 200:
-                raise HTTPException(status_code=502, detail="Bad Gateway: One of the services is not responding correctly")
-
-            service1_data = service1_response.json()
+            #if not service1_response.status_code == 200 or not service2_response.status_code == 200 or not service3_response.status_code == 200:
+                #raise HTTPException(status_code=502, detail="Bad Gateway: One of the services is not responding correctly")
+            print('response')
+            print(service1_response)
+            print('response')
+            print(service3_response)
+            service1_data = service1_response.text
             service2_data = service2_response.json()
-            service3_data = service3_response.json()
+            service3_data = service3_response.text
 
             aggregated_data = {
                 "service1_data": service1_data,
