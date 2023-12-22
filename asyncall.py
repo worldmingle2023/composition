@@ -1,10 +1,11 @@
 import asyncio
 import aiohttp
+from services import CHATGPT_URL, FORUM_URL, USER_URL
 
 microservices = [
-    "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
-    "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
-    "https://cloudcomputing-worldmingle.ue.r.appspot.com/"
+    CHATGPT_URL, 
+    FORUM_URL, 
+    USER_URL
 ]
 
 async def async_call_microservice(session, url):
@@ -22,10 +23,5 @@ async def asynchronous_calls():
 for _ in range(5):
     asyncio.run(asynchronous_calls())
 
-microservices = [
-    "https://cloudcomputing-worldmingle.ue.r.appspot.com/",
-    "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
-     "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
-]
 for _ in range(5):
     asyncio.run(asynchronous_calls())

@@ -1,11 +1,10 @@
 import requests
+from services import CHATGPT_URL, FORUM_URL, USER_URL
 
 microservices = [
-    "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
-    "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
-    "https://cloudcomputing-worldmingle.ue.r.appspot.com/"
-
-
+    CHATGPT_URL, 
+    FORUM_URL, 
+    USER_URL
 ]
 
 def call_microservice(url):

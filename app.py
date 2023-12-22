@@ -1,9 +1,11 @@
 import json
 import random
 from fastapi import FastAPI, HTTPException
+from services import CHATGPT_URL, FORUM_URL, USER_URL
 import httpx
 import asyncio
 import requests
+
 
 app = FastAPI()
 
@@ -12,9 +14,9 @@ async def aggregate_data():
     async with httpx.AsyncClient() as client:
         try:
 
-            service1_response = await client.get("http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/")
-            service2_response = await client.get("https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com")
-            service3_response = await client.get("https://cloudcomputing-worldmingle.ue.r.appspot.com/")
+            service1_response = await client.get(CHATGPT_URL)
+            service2_response = await client.get(FORUM_URL)
+            service3_response = await client.get(USER_URL)
 
             print('response')
             print(service1_response)
@@ -48,9 +50,9 @@ async def get_service_data(client, url):
 async def aggregate_data():
     async with httpx.AsyncClient() as client:
         urls = [
-            "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
-            "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
-            "https://cloudcomputing-worldmingle.ue.r.appspot.com/"
+            CHATGPT_URL, 
+            FORUM_URL, 
+            USER_URL
         ]
 
         for _ in range(10):
@@ -68,9 +70,9 @@ async def aggregate_data():
 
 def get_data_synchronously():
     urls = [
-        "http://ec2-3-22-186-8.us-east-2.compute.amazonaws.com:5000/",
-        "https://1qajdtdqj3.execute-api.us-west-2.amazonaws.com",
-        "https://cloudcomputing-worldmingle.ue.r.appspot.com/"
+        CHATGPT_URL, 
+        FORUM_URL, 
+        USER_URL
     ]
 
     for url in urls:
