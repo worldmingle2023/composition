@@ -5,6 +5,7 @@ pip install requests
 pip install asyncio   
 pip install aiohttp     
 pip install httpx 
+
 pip install fastapi uvicorn 
 
 
